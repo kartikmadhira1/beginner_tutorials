@@ -35,7 +35,7 @@
 #include "beginner_tutorials/modify_string.h"
 
 /**
- * Initialize a default string
+ * Initialize a default base string message
  */
 extern std::string stringMessage = "Custom base string call";
 
@@ -115,12 +115,20 @@ int main(int argc, char **argv) {
    */
   auto chatterPub = n.advertise<std_msgs::String>("chatter", 1000);
 
-  /* Advertise change_string service to associate the callback and
-   * allow other nodes to access the service 
+  /*
+   * Publish via the modify_string service to call the callback
    */
   auto server = n.advertiseService("modify_string", modifyString);
 
   ros::Rate loop_rate(node_rate);
+  ROS_DEBUG_STREAM("Publisher frequency now running at: " << node_rate);
+
+  /*
+   * Run fatal stream log if service/ros not working
+   */
+  if (!ros::ok()) {
+    ROS_FATAL_STREAM("ROS nodes are not running");
+  }
 
   /**
    * A count of how many messages we have sent. This is used to create
@@ -134,11 +142,17 @@ int main(int argc, char **argv) {
     std_msgs::String msg;
 
     std::stringstream ss;
-    ss << "ROS is fundamental to Robotics!" << count;
+    ss << stringMessage << count;
     msg.data = ss.str();
 
     ROS_INFO("%s", msg.data.c_str());
 
+    /*
+     * Warning message for node rate publishing at a low rate(<2)
+     */
+    if (node_rate < 2) {
+      ROS_WARN_STREAM("WARN: Publisher rate too low!");
+    }
     /**
      * The publish() function is how you send messages. The parameter
      * is the message object. The type of this object must agree with the type
