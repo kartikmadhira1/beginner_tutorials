@@ -45,15 +45,13 @@ extern std::string stringMessage = "Custom base string call";
  * @param res - response object to the request
  * @return bool - to indicate success/failure of callback function
  */
-bool modifyString(beginner_tutorials::modify_string::Request &req, 
-                  beginner_tutorials::modify_string::Response &res) { 
+bool modifyString(beginner_tutorials::modify_string::Request &req,
+                  beginner_tutorials::modify_string::Response &res) {
   stringMessage = req.input;
-  res.output = req.input; 
+  res.output = req.input;
   ROS_WARN_STREAM("Custom Base output string has been updated");
   return true;
 }
-
-
 
 /**
  * This tutorial demonstrates simple sending of messages over the ROS system.
@@ -72,21 +70,22 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "talker");
 
   // Set the rate at which the publisher works
-  int node_rate = 10;         
+  int node_rate = 10;
   /*
    * Check if the rate is being called correctly from the inputs
    */
   if (argc == 2) {
     node_rate = atoi(argv[1]);
-    ROS_DEBUG_STREAM("Node is being now set to run at:  " << node_rate);  // debug level message
+    ROS_DEBUG_STREAM("Node is being now set to run at:  " << node_rate);
     if (node_rate <=0) {
-        ROS_ERROR_STREAM("ERROR:The publishing rate of the node is too low!");   // error message
+        ROS_ERROR_STREAM("ERROR:The publishing rate of the node is too low!");
     }
   } else {
     /*
      * Set the default node publishing rate
      */
-    ROS_WARN_STREAM("Setting the node publishing rate at default value at: " << node_rate );
+    ROS_WARN_STREAM("Setting the node publishing rate at default value at: "
+                    << node_rate);
   }
 
   /**
