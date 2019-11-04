@@ -33,6 +33,8 @@
 
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "beginner_tutorials/modify_string.h"
+
 
 /**
  * @brief  Callback function to subscribe on the chatter topic

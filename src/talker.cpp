@@ -32,6 +32,28 @@
 #include <sstream>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "beginner_tutorials/modify_string.h"
+
+/**
+ * Initialize a default string
+ */
+extern std::string stringMessage = "Custom base string call";
+
+/**
+ * @brief callback function to the service call that modifies the string
+ * @param req - request object call for the modification service
+ * @param res - response object to the request
+ * @return bool - to indicate success/failure of callback function
+ */
+bool modifyString(beginner_tutorials::modify_string::Request &req, 
+                  beginner_tutorials::modify_string::Response &res) { 
+  stringMessage = req.input;
+  res.output = req.input; 
+  ROS_WARN_STREAM("Custom Base output string has been updated");
+  return true;
+}
+
+
 
 /**
  * This tutorial demonstrates simple sending of messages over the ROS system.
@@ -48,6 +70,24 @@ int main(int argc, char **argv) {
    * part of the ROS system.
    */
   ros::init(argc, argv, "talker");
+
+  // Set the rate at which the publisher works
+  int node_rate = 10;         
+  /*
+   * Check if the rate is being called correctly from the inputs
+   */
+  if (argc == 2) {
+    node_rate = atoi(argv[1]);
+    ROS_DEBUG_STREAM("Node is being now set to run at:  " << node_rate);  // debug level message
+    if (node_rate <=0) {
+        ROS_ERROR_STREAM("ERROR:The publishing rate of the node is too low!");   // error message
+    }
+  } else {
+    /*
+     * Set the default node publishing rate
+     */
+    ROS_WARN_STREAM("Setting the node publishing rate at default value at: " << node_rate );
+  }
 
   /**
    * NodeHandle is the main access point to communications with the ROS system.
@@ -75,7 +115,12 @@ int main(int argc, char **argv) {
    */
   auto chatterPub = n.advertise<std_msgs::String>("chatter", 1000);
 
-  ros::Rate loop_rate(10);
+  /* Advertise change_string service to associate the callback and
+   * allow other nodes to access the service 
+   */
+  auto server = n.advertiseService("modify_string", modifyString);
+
+  ros::Rate loop_rate(node_rate);
 
   /**
    * A count of how many messages we have sent. This is used to create
