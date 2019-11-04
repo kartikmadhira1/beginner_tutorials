@@ -31,6 +31,8 @@ cd src/
 git clone --recursive https://github.com/kartikmadhira1/beginner_tutorials
 cd ..
 catkin_make
+git checkout Week10_HW
+
 ```
 
 ## Running the package
@@ -55,3 +57,16 @@ rosrun beginner_tutorials listener
 ```
 
 
+## Run the nodes using launch file
+After building (catkin_make from catkin workspace), the launch file below can be used to run the listener and talker together:
+```
+roslaunch beginner_tutorials beginner_tutorials.launch rate:=20
+```
+
+## Modify string service
+Once the nodes are up and running, a string can be modified using the `rosservice` calls.
+Use `rosservice` command to change the string message as follows:
+```
+rosservice call /modify_string "This is a new modified string"
+``` 
+The talker now publishes the new modified string "This is a new modified string"
