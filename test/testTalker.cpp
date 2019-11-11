@@ -1,11 +1,45 @@
-// Copyright 2019, Kartik Madhira
-
+/**
+ *  MIT License
+ *
+ *  Copyright (c) 2019 Kartik Madhira
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a
+ *  copy of this software and associated documentation files (the "Software"),
+ *  to deal in the Software without restriction, including without
+ *  limitation the rights to use, copy, modify, merge, publish, distribute,
+ *  sublicense, and/or sell copies of the Software, and to permit persons to
+ *  whom the Software is furnished to do so, subject to the following
+ *  conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included
+ *  in all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ *  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ *  DEALINGS IN THE SOFTWARE.
+ *
+ *  @file    testTalker.cpp
+ *  @author  Kartik Madhira
+ *  @copyright MIT License
+ *
+ *  @brief  ENPM808X :Assignment to implement ROS publisher and subscriber nodes
+ *
+ */
 #include <ros/ros.h>
 #include <gtest/gtest.h>
 #include <ros/service_client.h>
 #include <tf/transform_listener.h>
 #include "beginner_tutorials/modify_string.h"
 
+/**
+ * @brief Test to confirm the modify_string service runs
+ * @param none
+ * @return none
+ */
 TEST(TESTSuite, testService) {   
     ros::NodeHandle handler;
     ros::ServiceClient srvClient = handler.serviceClient<
@@ -15,6 +49,12 @@ TEST(TESTSuite, testService) {
     EXPECT_TRUE(srvBool);   
 }
 
+/**
+ * @brief Test to confirm if the transform between
+ *        the world and the talk frames are being published.
+ * @param none
+ * @return none
+ */
 TEST(TESTSuite, testTransform) {   
     tf::TransformListener listener;
     tf::Transform tf;
