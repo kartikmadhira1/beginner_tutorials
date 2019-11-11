@@ -29,10 +29,14 @@
  *  @brief  ENPM808X :Assignment to implement ROS publisher and subscriber nodes
  *
  */
+#define _USE_MATH_DEFINES
+
+#include <cmath>
 #include <sstream>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "beginner_tutorials/modify_string.h"
+#include "tf/transform_broadcaster.h"
 
 /**
  * Initialize a default base string message
@@ -68,6 +72,9 @@ int main(int argc, char **argv) {
    * part of the ROS system.
    */
   ros::init(argc, argv, "talker");
+  /* Initialize a transform and broadcast object*/
+  static tf::TransformBroadcaster bcast;
+  tf::Transform transform;
 
   // Set the rate at which the publisher works
   int node_rate = 10;
@@ -159,7 +166,14 @@ int main(int argc, char **argv) {
      * in the constructor above.
      */
     chatterPub.publish(msg);
-
+    /* Fill in the transform rotation and translation parts for
+     * frames of /talk and /world.
+     */
+    transform.setOrigin(tf::Vector3(3.0, 6.0, 9.0));
+    tf::Quaternion quat;
+    quat.setRPY(M_PI_2, M_PI_4, 0);
+    transform.setRotation(quat);
+    bcast.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
     ros::spinOnce();
 
     loop_rate.sleep();
