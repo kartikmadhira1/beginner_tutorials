@@ -39,10 +39,12 @@
 #include "tf/transform_broadcaster.h"
 
 /**
- * Initialize a default base string message
+ * Initialize a default base string message via a struct 
+ * object that calls for a string input
  */
-extern std::string stringMessage = "Custom base string call";
-
+struct messageString {
+  std::string outputMessage;
+} stringOut;
 /**
  * @brief callback function to the service call that modifies the string
  * @param req - request object call for the modification service
@@ -51,8 +53,8 @@ extern std::string stringMessage = "Custom base string call";
  */
 bool modifyString(beginner_tutorials::modify_string::Request &req,
                   beginner_tutorials::modify_string::Response &res) {
-  stringMessage = req.input;
-  res.output = req.input;
+  stringOut.outputMessage = req.input;
+  res.output = stringOut.outputMessage;
   ROS_WARN_STREAM("Custom Base output string has been updated");
   return true;
 }
@@ -72,6 +74,8 @@ int main(int argc, char **argv) {
    * part of the ROS system.
    */
   ros::init(argc, argv, "talker");
+
+  stringOut.outputMessage = "Publishing this message";
   /* Initialize a transform and broadcast object*/
   static tf::TransformBroadcaster bcast;
   tf::Transform transform;
@@ -148,7 +152,7 @@ int main(int argc, char **argv) {
     std_msgs::String msg;
 
     std::stringstream ss;
-    ss << stringMessage << count;
+    ss << stringOut.outputMessage << count;
     msg.data = ss.str();
 
     ROS_INFO("%s", msg.data.c_str());
