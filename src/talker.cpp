@@ -77,14 +77,14 @@ int main(int argc, char **argv) {
   tf::Transform transform;
 
   // Set the rate at which the publisher works
-  int node_rate = 10;
+  int nodeRate = 10;
   /*
    * Check if the rate is being called correctly from the inputs
    */
   if (argc == 2) {
-    node_rate = atoi(argv[1]);
-    ROS_DEBUG_STREAM("Node is being now set to run at:  " << node_rate);
-    if (node_rate <=0) {
+    nodeRate = atoi(argv[1]);
+    ROS_DEBUG_STREAM("Node is being now set to run at:  " << nodeRate);
+    if (nodeRate <=0) {
         ROS_ERROR_STREAM("ERROR:The publishing rate of the node is too low!");
     }
   } else {
@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
      * Set the default node publishing rate
      */
     ROS_WARN_STREAM("Setting the node publishing rate at default value at: "
-                    << node_rate);
+                    << nodeRate);
   }
 
   /**
@@ -126,8 +126,8 @@ int main(int argc, char **argv) {
    */
   auto server = n.advertiseService("modify_string", modifyString);
 
-  ros::Rate loop_rate(node_rate);
-  ROS_DEBUG_STREAM("Publisher frequency now running at: " << node_rate);
+  ros::Rate loopRate(nodeRate);
+  ROS_DEBUG_STREAM("Publisher frequency now running at: " << nodeRate);
 
   /*
    * Run fatal stream log if service/ros not working
@@ -156,7 +156,7 @@ int main(int argc, char **argv) {
     /*
      * Warning message for node rate publishing at a low rate(<2)
      */
-    if (node_rate < 2) {
+    if (nodeRate < 2) {
       ROS_WARN_STREAM("WARN: Publisher rate too low!");
     }
     /**
@@ -176,7 +176,7 @@ int main(int argc, char **argv) {
     bcast.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
     ros::spinOnce();
 
-    loop_rate.sleep();
+    loopRate.sleep();
     ++count;
   }
 
