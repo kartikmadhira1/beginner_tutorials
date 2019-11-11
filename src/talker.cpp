@@ -177,13 +177,12 @@ int main(int argc, char **argv) {
     tf::Quaternion quat;
     quat.setRPY(M_PI_2, M_PI_4, 0);
     transform.setRotation(quat);
-    bcast.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
+    bcast.sendTransform(tf::StampedTransform(transform, ros::Time::now(),
+                                            "world", "talk"));
     ros::spinOnce();
 
     loopRate.sleep();
     ++count;
   }
-
-
   return 0;
 }

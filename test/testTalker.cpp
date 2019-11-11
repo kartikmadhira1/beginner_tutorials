@@ -40,13 +40,13 @@
  * @param none
  * @return none
  */
-TEST(TESTSuite, testService) {   
+TEST(TESTSuite, testService) {
     ros::NodeHandle handler;
     ros::ServiceClient srvClient = handler.serviceClient<
                                 beginner_tutorials::modify_string>
-                                ("modify_string");   
-    bool srvBool(srvClient.waitForExistence(ros::Duration(3)));   
-    EXPECT_TRUE(srvBool);   
+                                ("modify_string");
+    bool srvBool(srvClient.waitForExistence(ros::Duration(3)));
+    EXPECT_TRUE(srvBool);
 }
 
 /**
@@ -55,12 +55,12 @@ TEST(TESTSuite, testService) {
  * @param none
  * @return none
  */
-TEST(TESTSuite, testTransform) {   
+TEST(TESTSuite, testTransform) {
     tf::TransformListener listener;
     tf::Transform tf;
-    bool listenBool(listener.waitForTransform("world", "talk", 
+    bool listenBool(listener.waitForTransform("world", "talk",
                                             ros::Time(), ros::Duration(1.0)));
-    EXPECT_TRUE(listenBool);   
+    EXPECT_TRUE(listenBool);
 }
 
 // Run all the tests that were declared with TEST()
@@ -68,4 +68,4 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "testTalker");
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
-} 
+}
